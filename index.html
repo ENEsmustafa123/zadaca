@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <script>
+      const url = "./data.json";
+      let dataJson = [];
+      let numOfCards = 0;
+
+      const likes = () => {};
+
+      const fetchJson = async () => {
+        try {
+          const data = await fetch(url);
+          const response = await data.json();
+          console.log(response);
+          dataJson.push(...response);
+          loadMore();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      const loadMore = () => {
+        numOfCards += 4;
+        const posts = document.getElementById("posts");
+        const loadMoreButton = document.getElementById("loadMore");
+        posts.innerHTML = "";
+
+        if (dataJson.length === numOfCards) {
+          loadMoreButton.style.display = "none";
+        }
+
+        dataJson.forEach((result, idx) => {
+          if (idx < numOfCards) {
+            const myContent = `
+        <div class="pic1" id="${idx} onclick="openModal()">
+
+         <div class="info" >
+          <img  src="${result.profile_image}" alt="profile" />
+          <div class="personal">
+          <h3>${result.name}</h3>
+          
+           <p class="date">${result.date}</p>
+           </div>
+         <div class="insta">
+           <img src="./img/instagram-logo.svg" alt="instagram" />
+          </div>
+        </div>
+         <img src=${result.image} alt="image" style="width: 100%; height: 340px; object-fit:contain" />
+         <p class="text">
+             ${result.caption}
+        </p>
+        <div class="heart">
+        <img src="./img/heart.svg" alt="image" />
+
+      </div>
+        <p class="likes">${result.likes}</p>
+
+      </div>
+        `;
+            posts.innerHTML += myContent;
+          }
+        });
+      };
+      //     const openModal = (e) => {
+      //       console.log(e);
+      //       console.log("helloooooo");
+      //     };
+      //
+    </script>
+  </head>
+
+  <body onload="fetchJson()">
+    <div id="posts"></div>
+    <!-- //   <button id="myBtn">Open Modal</button> -->
+    <!-- 
+  //   <div id="myModal" class="modal">
+  //     <div class="modal-content">
+  //       <span class="close">&times;</span>
+  //       <p>Some text in the Modal..</p>
+  //     </div>
+    </div> -->
+    <button onclick="loadMore()" class="button" id="loadMore">LOAD MORE</button>
+    <!-- <script>
+      var modal = document.getElementById("myModal");
+
+      var btn = document.getElementById("myBtn");
+
+      var span = document.getElementsByClassName("close")[0];
+
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script> -->
+  </body>
+</html>
